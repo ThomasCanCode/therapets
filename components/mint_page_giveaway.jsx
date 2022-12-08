@@ -270,6 +270,10 @@ export default function Mint_page() {
 
         est = await contract.estimateGas.giveawaysMint(number_for_mint)
 
+        est = parseInt(est) + parseInt(est)/10;
+
+        est = parseInt(est);
+
         let nftTx = await contract.giveawaysMint(number_for_mint, 
           { 
             gasLimit: est,
@@ -327,12 +331,19 @@ export default function Mint_page() {
       const contract = new ethers.Contract(contractAddress, abi, signer);
       //let contract = new ethers.Contract(contractAddress, abi, provider);
 
-      let nftTx = await contract.mint(number_for_mint,mint_data.id,mint_data.signature, 
-        { 
-          value: pret_final,
-          gasLimit: 2100000,
-        })
+   
+      est = await contract.estimateGas.giveawaysMint(number_for_mint)
+      console.log('original est '+est+" type: "+typeof est)
+        est = parseInt(est) + parseInt(est)/10;
+        console.log('2 est '+est+" type: "+typeof est)
 
+        est = parseInt(est);
+        console.log('3 est '+est+" type: "+typeof est)
+
+     let nftTx = await contract.giveawaysMint(number_for_mint, 
+          { 
+            gasLimit: est,
+          })
       console.log('Mining....', nftTx.hash)
 
       let tx = await nftTx.wait()
@@ -341,7 +352,6 @@ export default function Mint_page() {
       console.log(
         `Mined, see transaction: https://etherscan.io/tx/${nftTx.hash}`
       )
-
 
     } catch (error) {
       console.error(error);

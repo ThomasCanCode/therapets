@@ -27,7 +27,7 @@
   display: inline-block;
 }
 .header ul li a{
-  color: #6B3E81!important;
+  color: #6B3E81;
 }
 
 .menuLinks{
@@ -435,3 +435,13 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .header ul li{
+    padding-right: 1rem;
+  }
+}
+@media screen and (max-width: 950px) {
+  .header ul li{
+    padding-right: 0.5rem;
+  }
+}

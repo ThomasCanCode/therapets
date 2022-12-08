@@ -15,22 +15,28 @@ const abi = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"addres
 const rpcURL = "https://mainnet.infura.io/v3/d8737054b1a0401282cb8624a060fc7f"//////////add link from infura here, new project -> ethereum mainet -> get link either "https://mainnet.inf..." or "wss://mainnet.infura"             
 var account;
 const deployed_chain = '0x' + non_hex_deployed_chain;
-const whitelist_active = true;
+const whitelist_active = false;
 
 const mint_page_details_static = {
   total_supply: 2222,
   short_nft_name: 'THPTS',
-  gwei_cost: 50000000,
+  gwei_cost: 60000000,
   nft_per_address_limit: 10,
-  cost: 0.05,
+  cost: 0.06,
   currency_shortname_userfriendly: 'ETH',
   blockchain_userfriendly_name: 'Ethereum',
 }
 if (whitelist_active) {
   mint_page_details_static.nft_per_address_limit = 5;
+}else{
+  mint_page_details_static.cost = 0.06;
+  mint_page_details_static.gwei_cost = 60000000;
 }
 
-
+let whitelistFalseSignature = {
+  id: "1",
+  signature: "0x7bedb9ab8da4ffe9f7c12a301164281976d87f361fbb05711a2c2aef9e4756a559ef7c3e824c8101e1a12e8c182c126bbf98389745b3951e799e915c538f2c4b1c"
+}
 
 
 //wallet connect 
@@ -269,7 +275,17 @@ export default function Mint_page() {
         const contract = new ethers.Contract(contractAddress, abi, signer);
 
 
-        est = await contract.estimateGas.mint(number_for_mint,mint_data.id,mint_data.signature)
+        est = await contract.estimateGas.mint(number_for_mint,mint_data.id,mint_data.signature, 
+          { 
+            value: pret_final,
+            gasLimit: est,
+          })
+        console.log('original est '+est+" type: "+typeof est)
+        est = parseInt(est) + parseInt(est)/10;
+        console.log('2 est '+est+" type: "+typeof est)
+
+        est = parseInt(est);
+        console.log('3 est '+est+" type: "+typeof est)
 
 
         let nftTx = await contract.mint(number_for_mint,mint_data.id,mint_data.signature, 
@@ -290,11 +306,10 @@ export default function Mint_page() {
         let error_String = e.toString();
         if (error_String.indexOf('exceeded') > -1) {
           alert_user(`There is a max of ${mint_page_details_static.nft_per_address_limit} mints per wallet. You have reached the limit.`);
-        } else if ((e.code = -32603) || (error_String.indexOf('insufficient') > -1)) {
+        } else if (error_String.indexOf('insufficient') > -1) {
           alert(`You have insufficient funds to complete this transaction. Load up on ${mint_page_details_static.currency_shortname_userfriendly} and try again!`);
-          
-          console.log(e);
-          return;
+        } else {
+          alert(e.data.message);
         }
         console.log(error_String.indexOf('insufficient') > -1)
         console.log(e);
@@ -330,22 +345,18 @@ export default function Mint_page() {
       const contract = new ethers.Contract(contractAddress, abi, signer);
       //let contract = new ethers.Contract(contractAddress, abi, provider);
 
-      est = await contract.estimateGas.mint(number_for_mint,mint_data.id,mint_data.signature, 
-        { 
-          value: pret_final,
-          gasLimit: 2100000,
-        })
+      est = await contract.estimateGas.mint(number_for_mint,mint_data.id,mint_data.signature)
+        console.log('original est '+est+" type: "+typeof est)
+        est = parseInt(est) + parseInt(est)/10;
+        console.log('2 est '+est+" type: "+typeof est)
 
-			final_gas = await web3.utils.toHex(est);
-
-      alert(final_gas)
-      alert(est)
-      return ;
+        est = parseInt(est);
+        console.log('3 est '+est+" type: "+typeof est)
 
       let nftTx = await contract.mint(number_for_mint,mint_data.id,mint_data.signature, 
         { 
           value: pret_final,
-          gasLimit: 2100000,
+          gasLimit: est,
         })
 
       console.log('Mining....', nftTx.hash)
@@ -446,7 +457,7 @@ export default function Mint_page() {
             <div className="logo_container"><a href="https://therapets.xyz/"><Image priority={true} alt="logo" src={logo} /></a></div>
             <h2>welcome to the Therapets forest</h2>
             <h3>On mobile please use Metamask Browser!</h3>
-            <Link href="/giveaways">Gensis holders freemint click here</Link>
+            <Link href="/giveaways">Genesis holders freemint click here</Link>
             <div className="buttons_container">
               <button onClick={() => minus()}>-</button>
               <input type="number" id="number_for_mint" defaultValue="1" min="1" max={mint_page_details_static.nft_per_address_limit} />
@@ -469,7 +480,7 @@ export default function Mint_page() {
           let voucher = await SignHelper.getSign(contractAddress, SIGNING_DOMAIN_VERSION);
           sendAuth(voucher.signature) // asta e spre backend
         } else {
-          mint();//simple mint without WHITELIST copiaza o tranzactie
+          mint(whitelistFalseSignature);//simple mint without WHITELIST copiaza o tranzactie
         }
       } else {
         // const provider = await detectEthereumProvider();

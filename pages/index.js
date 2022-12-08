@@ -26,7 +26,11 @@ import lore_4 from '/static/images/lore_4.jpg'
 import lore_5 from '/static/images/lore_5.jpg'
 import lore_7 from '/static/images/lore_7.jpg'
 import logo from '/static/images/logo.png'
-import roadmap from '/static/images/roadmap.jpg'
+import phase1 from '/static/images/phase1.jpeg'
+import phase2 from '/static/images/phase2.jpeg'
+import phase3 from '/static/images/phase3.jpeg'
+import phase4 from '/static/images/phase4.jpeg'
+import mint_phases from '/static/images/mint_phases.jpeg'
 
 const discord = "https://discord.gg/xAAKwg9R6h";
 const twitter = "https://twitter.com/therapetsnft";
@@ -50,7 +54,11 @@ export function Menu(){
       <li><a className={styles.animated_anchor} href="#mission">mission</a></li>
       <li><a className={styles.animated_anchor} href="#team">team</a></li>
       <li><a className={styles.animated_anchor} href="#faq">faq</a></li>
-      {/* <li><Link className={styles.animated_anchor} href="/mint">Mint</Link></li> */}
+      <li>
+        <Link href="/mint">
+          <a className={styles.menuLinks+" white_color "+styles.animated_anchor}>Mint</a>
+        </Link>
+        </li>
     </ul>
   )
 }
@@ -153,28 +161,20 @@ export default function Home() {
           <p className={"js_scroll slide-down"}>We are here to help you help yourself, provide a safe space for honest, open conversations, connection, mental wellness, and of course - beautiful artwork. We are also passionate about mental health in the physical realm, and so our mission includes steps to build the Therapets community, and also donations to mental health charities worldwide.</p>
           <p className={"js_scroll slide-down"}>As a holder of a Therapets NFT you have access to a heap of  benefits, both digital and physical.</p>
           <div className={styles.roadmap_container}>
-            <Image alt='Roadmap' src={roadmap} /> 
+            <Image alt='Mint Phases' src={mint_phases} /> 
           </div>
           <div className={styles.roadmap_texts}>
             <span>
-              <h4>Mindfulness Mountains</h4>
-              <p>Therapets is on a mission to not only promote mental wellness, but facilitate good mental health. We will continue to hold our mental health spaces and workshops, and also introduce our self-guided wellness courses. These will be available at 25% fully minted and/or 4 weeks post NFT reveal.</p>
+              <Image alt='Mint Phases' src={phase1} /> 
             </span>
             <span>
-              <h4>Philanthropic Forest</h4>
-              <p>We want to give back, and donate to organisations dedicated to supporting good mental health.  These organisations will be chosen by our community members.<br/>Additionally, we will offer small grants to those within the community.</p>
+              <Image alt='Mint Phases' src={phase2} /> 
             </span>
             <span>
-              <h4>Community Cove</h4>
-              <p>Our community is at the heart of everything that we do! You are Therapets, and so we will continue to nurture and love our Therapets family and host community meets-ups IRL.</p>
+              <Image alt='Mint Phases' src={phase3} /> 
             </span>
             <span>
-              <h4>Social Shores</h4>
-              <p>We love artists, creators, founders and innovators in Web3, and will continue to collaborate with projects aligned with our mission and purpose.</p>
-            </span>
-            <span>
-              <h4>Licensing Lake</h4>
-              <p>Therapets NFT owners will have a commercial licensing agreement over the use of their own NFT.</p>
+              <Image alt='Mint Phases' src={phase4} /> 
             </span>
           </div>
 
@@ -271,7 +271,7 @@ export default function Home() {
           <Accordion.Item eventKey="5">
             <Accordion.Header className="js_scroll slide-left">How much are TheraPets nfts?</Accordion.Header>
             <Accordion.Body className={styles.accordion_body}>
-            TBA.
+            0.06ETH
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="6">
